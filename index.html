@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASCII Webcam</title>
+  <script type="module" crossorigin src="/ascii-webcam/assets/index-KGheoovW.js"></script>
+  <link rel="stylesheet" crossorigin href="/ascii-webcam/assets/index-D9zFA_g5.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex flex-col sm:flex-row h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar"
+      class="w-full sm:w-64 bg-white shadow-md p-4 transition-all duration-300 ease-in-out overflow-y-auto">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Options</h2>
+        <button id="toggleSidebar" class="sm:hidden p-2 rounded-md hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="flex items-center">
+            <input type="checkbox" id="asciiToggle" class="form-checkbox h-5 w-5 text-blue-600" checked>
+            <span class="ml-2 text-sm">Enable ASCII Effect</span>
+          </label>
+        </div>
+
+        <div>
+          <label for="charSet" class="block text-sm font-medium text-gray-700">ASCII Character Set</label>
+          <select id="charSet"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            <option value="standard">Standard</option>
+            <option value="simple">Simple</option>
+            <option value="complex">Complex</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="colorScheme" class="block text-sm font-medium text-gray-700">Color Scheme</label>
+          <select id="colorScheme"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            <option value="greenOnBlack">Green on Black</option>
+            <option value="whiteOnBlack">White on Black</option>
+            <option value="blackOnWhite">Black on White</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="textColor" class="block text-sm font-medium text-gray-700">Text Color</label>
+          <input type="color" id="textColor" value="#00FF00" class="mt-1 block w-full">
+        </div>
+
+        <div>
+          <label for="bgColor" class="block text-sm font-medium text-gray-700">Background Color</label>
+          <input type="color" id="bgColor" value="#000000" class="mt-1 block w-full">
+        </div>
+
+        <div>
+          <label for="fontSize" class="block text-sm font-medium text-gray-700">Font Size</label>
+          <input type="range" id="fontSize" min="4" max="18" value="12" class="mt-1 block w-full">
+          <span id="fontSizeValue" class="text-sm text-gray-500">6px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div id="app" class="flex-1 p-4 overflow-y-auto flex flex-col">
+      <h1 class="text-2xl sm:text-4xl font-bold text-center mb-4 text-blue-600"> ASCII Webcam</h1>
+      <div class="flex-grow flex justify-center items-center">
+        <div id="asciiContainer" class="relative w-full h-0 pb-[56.25%] max-w-3xl">
+          <video id="webcam" autoplay playsinline class="absolute inset-0 w-full h-full object-contain"></video>
+          <pre id="asciiOutput"
+            class="absolute inset-0 bg-black text-green-500 p-4 rounded-lg shadow-lg overflow-hidden whitespace-pre"></pre>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <button id="captureButton"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out">
+          Capture ASCII
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

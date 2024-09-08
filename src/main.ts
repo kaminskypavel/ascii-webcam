@@ -1,5 +1,5 @@
-import './style.css'
-import {convertToAscii, ASCII_CHAR_SETS, CharSet} from './utils/ascii-convertor';
+import './style.css';
+import {CharSet, convertToAscii} from './utils/ascii-convertor';
 
 // State
 let currentCharSet: CharSet = 'standard';

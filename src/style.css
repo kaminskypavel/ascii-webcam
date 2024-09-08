@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#asciiOutput {
+  font-family: monospace;
+  font-size: 10px;
+  line-height: 1;
+  white-space: pre;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#asciiOutput::after {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  padding-bottom: 100%;
+}

@@ -20,7 +20,9 @@ const elements = {
   asciiToggle: document.getElementById('asciiToggle') as HTMLInputElement,
   sidebar: document.getElementById('sidebar') as HTMLDivElement,
   toggleSidebarButton: document.getElementById('toggleSidebar') as HTMLButtonElement,
+
 };
+
 
 // Main Functions
 async function setupWebcam(): Promise<void> {
@@ -114,14 +116,26 @@ function updateColors(): void {
   elements.asciiOutput.style.backgroundColor = elements.bgColorInput.value;
 }
 
-function updateFontSize(): void {
-  const size = elements.fontSizeInput.value;
-  elements.asciiOutput.style.fontSize = `${size}px`;
-  elements.asciiOutput.style.lineHeight = `${size}px`;
-  elements.fontSizeValue.textContent = `${size}px`;
-  scaleAsciiOutput();
+function setInitialFontSize(): void {
+  const isMobile = window.innerWidth < 640;
+  const initialSize = isMobile ? '6' : '11';
+  if (elements.fontSizeInput && elements.fontSizeValue && elements.asciiOutput) {
+    elements.fontSizeInput.value = initialSize;
+    elements.fontSizeValue.textContent = `${initialSize}px`;
+    elements.asciiOutput.style.fontSize = `${initialSize}px`;
+    elements.asciiOutput.style.lineHeight = `${initialSize}px`;
+  }
 }
 
+function updateFontSize(): void {
+  const size = elements.fontSizeInput.value;
+  if (elements.asciiOutput && elements.fontSizeValue) {
+    elements.asciiOutput.style.fontSize = `${size}px`;
+    elements.asciiOutput.style.lineHeight = `${size}px`;
+    elements.fontSizeValue.textContent = `${size}px`;
+  }
+  scaleAsciiOutput();
+}
 function toggleAsciiEffect(): void {
   isAsciiEnabled = elements.asciiToggle.checked;
 }
@@ -131,29 +145,73 @@ function handleColorChange(): void {
   updateColors();
 }
 
+const overlay = document.getElementById('overlay');
+
 function toggleSidebar(): void {
-  elements.sidebar.classList.toggle('-translate-x-full');
+  const sidebar = document.getElementById('sidebar');
+  const toggleButton = document.getElementById('toggleSidebar');
+  if (sidebar && overlay) {
+    sidebar.classList.toggle('-translate-x-full');
+    overlay.classList.toggle('hidden');
+    if (toggleButton) {
+      // Update the toggle button icon based on sidebar state
+      if (sidebar.classList.contains('-translate-x-full')) {
+        toggleButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+        `;
+      } else {
+        toggleButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        `;
+      }
+    }
+  }
 }
+
+function closeSidebar(): void {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar && overlay) {
+    sidebar.classList.add('-translate-x-full');
+    overlay.classList.add('hidden');
+    if (elements.toggleSidebarButton) {
+      elements.toggleSidebarButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+        </svg>
+      `;
+    }
+  }
+}
+
+
 
 // Event Listeners and Initialization
 setupWebcam();
 elements.captureButton?.addEventListener('click', captureAscii);
-elements.charSetSelect.addEventListener('change', updateCharSet);
-elements.colorSchemeSelect.addEventListener('change', updateColorScheme);
-elements.textColorInput.addEventListener('input', handleColorChange);
-elements.bgColorInput.addEventListener('input', handleColorChange);
-elements.fontSizeInput.addEventListener('input', updateFontSize);
-elements.asciiToggle.addEventListener('change', toggleAsciiEffect);
+elements.charSetSelect?.addEventListener('change', updateCharSet);
+elements.colorSchemeSelect?.addEventListener('change', updateColorScheme);
+elements.textColorInput?.addEventListener('input', handleColorChange);
+elements.bgColorInput?.addEventListener('input', handleColorChange);
+elements.fontSizeInput?.addEventListener('input', updateFontSize);
+elements.asciiToggle?.addEventListener('change', toggleAsciiEffect);
 elements.toggleSidebarButton?.addEventListener('click', toggleSidebar);
+overlay?.addEventListener('click', closeSidebar);
 
 // Initial setup
 updateColorScheme();
-updateFontSize();
+setInitialFontSize();
 
-// Responsive sidebar behavior
+// Responsive behavior
 window.addEventListener('resize', () => {
-  if (window.innerWidth >= 640) {
-    elements.sidebar.classList.remove('-translate-x-full');
+  const sidebar = document.getElementById('sidebar');
+  if (window.innerWidth >= 640 && sidebar && overlay) {
+    sidebar.classList.remove('-translate-x-full');
+    overlay.classList.add('hidden');
   }
+  setInitialFontSize();
   scaleAsciiOutput();
 });

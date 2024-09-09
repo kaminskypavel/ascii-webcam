@@ -4,19 +4,27 @@
 
 #asciiOutput {
   font-family: monospace;
-  font-size: 10px;
   line-height: 1;
   white-space: pre;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 6px; /* Default for mobile */
 }
 
-#asciiOutput::after {
-  content: '';
-  display: inline-block;
-  width: 0;
-  height: 0;
-  padding-bottom: 100%;
+@media (min-width: 640px) {
+  #asciiOutput {
+    font-size: 11px; /* Default for desktop */
+  }
+}
+
+@media (max-width: 640px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+  }
+
+  header {
+    padding-left: 3rem; /* Make room for the toggle button */
+  }
 }
